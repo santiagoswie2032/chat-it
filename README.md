@@ -5,7 +5,7 @@ A simple real-time chat application built with a React frontend and a Node.js ba
 Live Demo:
 https://chat-it-qm2l.onrender.com/
 
-Features
+Features ->
 
 Real-time messaging
 
@@ -17,15 +17,15 @@ Instant message updates using WebSockets
 
 Lightweight and easy to use
 
-Tech Stack
+Tech Stack -->
 
-Frontend
+Frontend ->
 
 React
 
 CSS
 
-Backend
+Backend ->
 
 Node.js
 
@@ -33,6 +33,6 @@ Express
 
 Socket.io
 
-Deployment
+Deployment ->
 
 Render
