@@ -21,15 +21,17 @@ const io = socketio(server, {
 
 app.use(cors());
 
-// API routes first (before static files / catch-all)
-app.use(router);
-
 // In production, serve the React client build
 if (process.env.NODE_ENV === 'production') {
   // Serve static assets from the client build folder
   app.use(express.static(path.join(__dirname, '../client/build')));
+}
 
-  // Any request that doesn't match an API route gets the React app
+// API routes mounted under /api so they don't conflict with React routes
+app.use('/api', router);
+
+// In production, any unmatched route gets the React app (for client-side routing)
+if (process.env.NODE_ENV === 'production') {
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../client/build/index.html'));
   });
