@@ -9,7 +9,9 @@ import Input from '../Input/Input';
 
 import './Chat.css';
 
-const ENDPOINT = 'http://localhost:5000';
+const ENDPOINT = window.location.hostname === 'localhost' 
+  ? 'http://localhost:5000' 
+  : window.location.origin;
 
 let socket;
 
@@ -33,7 +35,8 @@ const Chat = ({ location }) => {
         alert(error);
       }
     });
-  }, [ENDPOINT, location.search]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.search]);
   
   useEffect(() => {
     socket.on('message', message => {

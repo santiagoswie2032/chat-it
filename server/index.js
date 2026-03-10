@@ -2,28 +2,38 @@ const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
 const cors = require('cors');
+const path = require('path');
 
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
 
 const router = require('./router');
 
 const app = express();
-
-const path = require("path");
-
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../client/build")));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
-  });
-}
-
 const server = http.createServer(app);
-const io = socketio(server);
+
+// Configure socket.io with CORS support
+const io = socketio(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
+});
 
 app.use(cors());
+
+// API routes first (before static files / catch-all)
 app.use(router);
+
+// In production, serve the React client build
+if (process.env.NODE_ENV === 'production') {
+  // Serve static assets from the client build folder
+  app.use(express.static(path.join(__dirname, '../client/build')));
+
+  // Any request that doesn't match an API route gets the React app
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/build/index.html'));
+  });
+}
 
 io.on('connect', (socket) => {
   socket.on('join', ({ name, room }, callback) => {
@@ -59,4 +69,5 @@ io.on('connect', (socket) => {
   })
 });
 
-server.listen(process.env.PORT || 5000, () => console.log(`Server has started.`));
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => console.log(`Server has started on port ${PORT}.`));

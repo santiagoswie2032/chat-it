@@ -1,0 +1,17 @@
+{
+  "name": "chat-it",
+  "version": "1.0.0",
+  "description": "Real-time chat application",
+  "scripts": {
+    "start": "cd server && node index.js",
+    "server:dev": "cd server && npm run dev",
+    "client:install": "cd client && npm install",
+    "server:install": "cd server && npm install",
+    "client:build": "cd client && npm run build",
+    "build": "npm run server:install && npm run client:install && npm run client:build",
+    "dev": "npm run server:dev"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
